@@ -3,6 +3,7 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class AggregationServer {
+    LamportClock localClock = new LamportClock();
     public static void main(String[] args) {
         try {
             ServerSocket ss = new ServerSocket(4567);
