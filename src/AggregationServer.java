@@ -13,8 +13,9 @@ public class AggregationServer {
                 System.out.println("Client connected: " + s.getInetAddress());
 
                 Scanner sc = new Scanner(s.getInputStream());
-                String clientInput = sc.nextLine();
-                System.out.println("Client input: " + clientInput);
+                while (sc.hasNext()) {
+                    System.out.println(sc.nextLine());
+                }
 
                 s.close(); // Close the socket after handling client interaction
             }

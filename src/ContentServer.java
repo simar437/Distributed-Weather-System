@@ -1,4 +1,6 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+
 import java.io.*;
 import java.net.Socket;
 import java.nio.file.Files;
@@ -14,9 +16,9 @@ public class ContentServer {
     public static void main(String[] args) {
         try {
 
-            //Socket s = new Socket("localhost", 4567);
+            Socket s = new Socket("localhost", 4567);
             String text = new String(Files.readAllBytes(Paths.get("weather data/file.txt")));
-            ObjectMapper objectMapper = new ObjectMapper();
+            ObjectWriter objectMapper = new ObjectMapper().writer().withDefaultPrettyPrinter();
             Map<String, String> keyValueData = Arrays.stream(text.split("\n"))
                     .map(line -> line.split(":", 2))
                     .filter(parts -> parts.length == 2)
@@ -27,7 +29,18 @@ public class ContentServer {
                     "Content-Type: application/json\n" +
                     "Content-Length: " + text.length() + "\n" +
                     text;
+            System.out.println(request);
 
+            PrintWriter out = new PrintWriter(s.getOutputStream(), true);
+            out.print(request);
+            out.flush();
+
+            // Read and print the response
+            BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
+            String line;
+            while ((line = in.readLine()) != null) {
+                System.out.println(line);
+            }
         }
         catch (Exception e) {
             e.printStackTrace();
