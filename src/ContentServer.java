@@ -35,7 +35,6 @@ public class ContentServer {
             out.print(request);
             out.flush();
 
-            // Read and print the response
             BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
             String line;
             while ((line = in.readLine()) != null) {
@@ -44,7 +43,6 @@ public class ContentServer {
         }
         catch (Exception e) {
             e.printStackTrace();
-            System.out.println("error");
         }
     }
 }
