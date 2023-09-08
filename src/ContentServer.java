@@ -24,6 +24,7 @@ public class ContentServer {
                     .filter(parts -> parts.length == 2)
                     .collect(Collectors.toMap(parts -> parts[0].trim(), parts -> parts[1].trim()));
             text = objectMapper.writeValueAsString(keyValueData);
+            System.out.println(text);
             String request = "PUT /weather.json HTTP/1.1\n" +
                     "User-Agent: ATOMClient/1/0\n" +
                     "Content-Type: application/json\n" +
