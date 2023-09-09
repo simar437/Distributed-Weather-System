@@ -53,11 +53,12 @@ public class ContentServer {
             out.print(request);
             out.flush();
 
-            BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
-            String line;
-            while ((line = in.readLine()) != null) {
-                System.out.println(line);
-            }
+//            BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
+//            String line;
+//            while ((line = in.readLine()) != null) {
+//                System.out.println(line);
+//            }
+            s.close();
         }
         catch (Exception e) {
             e.printStackTrace();

@@ -14,8 +14,9 @@ public class GETClient {
                     "Host:" + host +"\n" +
                     "User-Agent: C-" + id + "\n" +
                     "Accept: application/json\n";
+            System.out.println(request);
             writer.println(request);
-
+            //writer.println(request);
             Scanner sc = new Scanner(s.getInputStream());
             while (sc.hasNext()) {
                 System.out.println(sc.nextLine());
