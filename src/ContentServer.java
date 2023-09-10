@@ -22,7 +22,7 @@ public class ContentServer {
             ObjectMapper objectMapper = new ObjectMapper();
             ObjectNode currentJsonObject = null;
             while (sc.hasNext()) {
-                String[] parts = sc.nextLine().split(":");
+                String[] parts = sc.nextLine().split(":", 2);
                 if (parts.length == 2) {
                     String key = parts[0].trim();
                     String value = parts[1].trim();
@@ -46,6 +46,7 @@ public class ContentServer {
                     "User-Agent: ATOMClient/1/0\n" +
                     "Content-Type: application/json\n" +
                     "Content-Length: " + text.length() + "\n" +
+                    "\n" +
                     text;
             System.out.println(request);
 

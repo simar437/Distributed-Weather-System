@@ -1,17 +1,22 @@
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
 public class AggregationServer {
     static private LamportClock localClock = new LamportClock();
-    static private HashMap<String, Weather> currentState = new HashMap<>();
+    static private HashMap<String, Deque<Weather>> currentState = new HashMap<>();
     static Scanner sc;
 
     synchronized static void updateCurrentState(String id, Weather w) {
-        currentState.put(id, w);
+        if (!currentState.containsKey(id)) {
+            currentState.put(id, new ArrayDeque<>());
+        }
+        currentState.get(id).add(w);
+    }
+
+    synchronized static void removePrevState(String id) {
+        currentState.get(id).remove();
     }
 
     synchronized static void logEvent() {
