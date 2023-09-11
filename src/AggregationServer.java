@@ -1,4 +1,3 @@
-import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
@@ -36,7 +35,7 @@ public class AggregationServer {
             System.out.println("Server running...");
             while (true) {
                 Socket s = ss.accept();
-                Thread t = new Thread(new HandleClient(s, new HashMap<>(currentState)));
+                Thread t = new Thread(new HandleGET(s, new HashMap<>(currentState)));
                 t.start();
             }
         } catch (Exception e) {

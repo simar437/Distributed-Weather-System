@@ -1,12 +1,12 @@
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.*;
 
-public class HandleClient implements Runnable {
+public class HandleGET implements Runnable {
 
     private Socket socket;
     BufferedReader reader;
@@ -16,7 +16,7 @@ public class HandleClient implements Runnable {
 
     Boolean isPUT = false;
 
-    public HandleClient(Socket s, HashMap<String, Deque<Weather>> copyOfCurrentState) {
+    public HandleGET(Socket s, HashMap<String, Deque<Weather>> copyOfCurrentState) {
         try {
             this.socket = s;
             this.currentState = copyOfCurrentState;
@@ -58,26 +58,10 @@ public class HandleClient implements Runnable {
         }
     }
     void PUTRequest() throws IOException, InterruptedException {
-        String[] second = reader.readLine().split(" ");
-        reader.readLine();
-        String body = "";
-        reader.readLine();
-        String line = reader.readLine();
-        System.out.println(line);
-        while (line != null) {
-            body += line + "\n";
-            line = reader.readLine();
-        }
-        ObjectMapper o = new ObjectMapper();
-        List<Weather> objs = o.readValue(body, new TypeReference<List<Weather>>() {});
-        for (Weather w : objs) {
-            AggregationServer.updateCurrentState(w.id, w);
-        }
+
         close();
         Thread.sleep(30000);
-        for (Weather w : objs) {
-            AggregationServer.removePrevState(w.id);
-        }
+
     }
     void GETRequest(String id) throws JsonProcessingException {
         ObjectMapper o = new ObjectMapper();
