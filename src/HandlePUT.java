@@ -1,60 +1,41 @@
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
-import java.util.Deque;
-import java.util.HashMap;
 import java.util.List;
 
-public class HandlePUT implements Runnable{
-    private Socket socket;
-    BufferedReader reader;
-    PrintWriter writer;
+public class HandlePUT extends RequestHandler implements Runnable  {
     // HashMap<String, Weather> weatherData = new HashMap<>();
-    HashMap<String, Deque<Weather>> currentState;
-    List<Weather> wheatherData;
+    List<Weather> whetherData;
 
     int remainingTime = 30000;
 
-    public HandlePUT(Socket s, HashMap<String, Deque<Weather>> copyOfCurrentState) {
-        try {
-            this.socket = s;
-            this.currentState = copyOfCurrentState;
-            System.out.println(socket.getInetAddress());
-            reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            writer = new PrintWriter(socket.getOutputStream(), true);
-
-            PUTRequest();
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public HandlePUT(RequestHandler r) {
+        super(r);
+        PUTRequest();
     }
 
     public HandlePUT(List<Weather> objs, int remainingTime) {
-        this.wheatherData = objs;
+        this.whetherData = objs;
         this.remainingTime = remainingTime;
     }
     private void PUTRequest() {
         try {
-            String[] second = reader.readLine().split(" ");
-            reader.readLine();
-            String body = "";
-            reader.readLine();
-            String line = reader.readLine();
-            System.out.println(line);
-            while (line != null) {
-                body += line + "\n";
-                line = reader.readLine();
-            }
+//            reader.readLine();
+//            StringBuilder body = new StringBuilder();
+//            reader.readLine();
+//            String line;
+//            while ((line = reader.readLine()) != null) {
+//                body.append(line).append("\n");
+//            }
+
+            String request = SendRequest.receive(socket);
+            System.out.println("R: " + request);
+            String[] headAndBody = SendRequest.headersAndBodySplit(request);
+            String body = headAndBody[1];
+            System.out.println("body: " +body);
             ObjectMapper o = new ObjectMapper();
-            List<Weather> objs = o.readValue(body, new TypeReference<List<Weather>>() {
-            });
-            this.wheatherData = objs;
+            List<Weather> objs = o.readValue(body, new TypeReference<List<Weather>>() {});
+            this.whetherData = objs;
             for (Weather w : objs) {
                 AggregationServer.updateCurrentState(w.id, w);
             }
@@ -65,7 +46,7 @@ public class HandlePUT implements Runnable{
     @Override
     public void run() {
         try {
-            removePrevState(wheatherData, remainingTime);
+            removePrevState(whetherData, remainingTime);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

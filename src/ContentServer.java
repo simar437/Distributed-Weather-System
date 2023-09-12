@@ -42,23 +42,17 @@ public class ContentServer {
             }
 
             String text = jsonObjects.toString();
-            String request = "PUT /weather.json HTTP/1.1\n" +
-                    "User-Agent: ATOMClient/1/0\n" +
-                    "Content-Type: application/json\n" +
-                    "Content-Length: " + text.length() + "\n" +
-                    "\n" +
-                    text;
+            String request = "PUT /weather.json HTTP/1.1\r\n" +
+                    "User-Agent: ATOMClient/1/0\r\n" +
+                    "Content-Type: application/json\r\n" +
+                    "Content-Length: " + text.length() + "\r\n" +
+                    "\r\n" +
+                    text + "\r\n";
             System.out.println(request);
+            SendRequest.send(s, request);
+            //String response = SendRequest.receive(s);
+            //System.out.println(response);
 
-            PrintWriter out = new PrintWriter(s.getOutputStream(), true);
-            out.print(request);
-            out.flush();
-
-//            BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
-//            String line;
-//            while ((line = in.readLine()) != null) {
-//                System.out.println(line);
-//            }
             s.close();
         }
         catch (Exception e) {

@@ -14,6 +14,10 @@ public class AggregationServer {
         currentState.get(id).add(w);
     }
 
+    synchronized static HashMap<String, Deque<Weather>> getCurrentState() {
+        return new HashMap<>(currentState);
+    }
+
     synchronized static void removePrevState(String id) {
         currentState.get(id).remove();
     }
@@ -35,8 +39,7 @@ public class AggregationServer {
             System.out.println("Server running...");
             while (true) {
                 Socket s = ss.accept();
-                Thread t = new Thread(new HandleGET(s, new HashMap<>(currentState)));
-                t.start();
+                new RequestHandler(s).handle();
             }
         } catch (Exception e) {
             e.printStackTrace();
