@@ -26,8 +26,8 @@ public class AggregationServer {
         localClock.logCurrentEvent();
     }
 
-    synchronized static void updateClock(LamportClock l) {
-        localClock.updateTime(l);
+    synchronized static void updateClock(int t) {
+        localClock.updateTime(t);
     }
 
     synchronized static String getTime() {

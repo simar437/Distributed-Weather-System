@@ -19,13 +19,19 @@ public class HandleGET extends RequestHandler implements Runnable {
 
     @Override
     public void run() {
+        System.out.println("Connected: 123456");
+
         GETRequest();
-        close();
     }
-    private void GETRequest() {
+    private void GETRequest()  {
         System.out.println("Connected: " + socket.isConnected());
 
+
         try {
+//            String line;
+//            while ((line = reader.readLine()) != null) {
+//                System.out.println(line);
+//            }
             ObjectMapper o = new ObjectMapper();
             String text;
             if (Objects.equals(id, "")) {
@@ -39,12 +45,14 @@ public class HandleGET extends RequestHandler implements Runnable {
             }
             System.out.println("get reached");
             System.out.println(text);
-            writer.println("HTTP/1.1 200 OK\n" +
+            String response = "HTTP/1.1 200 OK\n" +
                     "Content-Type: application/json\n" +
                     "Content-Length:" + text.length() + "\n" +
                     "\n" +
-                    text);
-            writer.close();
+                    text;
+            //writer.println();
+            req.send(response);
+            // writer.close();
         }
         catch (Exception e) {
             e.printStackTrace();

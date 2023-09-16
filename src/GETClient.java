@@ -9,12 +9,13 @@ public class GETClient {
             String host = "";
             String id = "";
             String stationId = "";
-            String request = "GET weather/" + stationId + " HTTP/1.1\n" +
-                    "Host:" + host +"\n" +
-                    "User-Agent: C-" + id + "\n" +
-                    "Accept: application/json\n";
+            String request = "GET /" + stationId + " HTTP/1.1\r\n" +
+                    "Host:" + host +"\r\n" +
+                    "User-Agent: C-" + id + "\r\n" +
+                    "Accept: application/json\r\n";
             //System.out.println(request);
-            String response = SendRequest.doALL("localhost", 4567, request);
+            SendRequest req = new SendRequest("localhost", 4567);
+            String response = req.doALL(request);
             System.out.println(response);
         }
         catch (Exception e) {

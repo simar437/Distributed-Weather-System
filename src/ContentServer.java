@@ -11,11 +11,20 @@ import java.util.stream.Collectors;
 
 
 public class ContentServer {
-    LamportClock localClock = new LamportClock();
     public static void main(String[] args) {
+        LamportClock localClock = new LamportClock();
+        String host = "localhost";
         try {
 
-            Socket s = new Socket("localhost", 4567);
+//            String sync = "GET /SYNC HTTP/1.1\r\n" +
+//                    "Host: " + host +
+//                    "Lamport-Clock: " + localClock.logCurrentEvent() + "\r\n" +
+//                    "\r\n";
+//            SendRequest r = new SendRequest(host, 4567);
+//            r.doALL(sync);
+
+
+
             String file = "weather data/file.txt";
             Scanner sc = new Scanner(new FileReader(file));
             List<ObjectNode> jsonObjects = new ArrayList<>();
@@ -44,16 +53,19 @@ public class ContentServer {
             String text = jsonObjects.toString();
             String request = "PUT /weather.json HTTP/1.1\r\n" +
                     "User-Agent: ATOMClient/1/0\r\n" +
+                    "Lamport-Clock: " + localClock.logCurrentEvent() + "\r\n" +
                     "Content-Type: application/json\r\n" +
                     "Content-Length: " + text.length() + "\r\n" +
                     "\r\n" +
                     text + "\r\n";
-            System.out.println(request);
-            SendRequest.send(s, request);
+            // System.out.println(request);
+            // SendRequest.send(s, request);
+            SendRequest req = new SendRequest(host, 4567);
+            System.out.println(req.doALL(request));
             //String response = SendRequest.receive(s);
             //System.out.println(response);
 
-            s.close();
+
         }
         catch (Exception e) {
             e.printStackTrace();

@@ -6,6 +6,7 @@ JACKSON_DIR = lib/jackson
 AGGREGATION_SERVER = AggregationServer
 CONTENT_SERVER = ContentServer
 OUT_DIR := out/production/A2_DS
+CLIENT = GETClient
 
 default: compile
 
@@ -19,3 +20,5 @@ aggregation_server: compile
 content_server:
 	$(JAVA) -cp "$(JACKSON_DIR)/*;$(OUT_DIR)" $(CONTENT_SERVER)
 
+client:
+	$(JAVA) -cp "$(JACKSON_DIR)/*;$(OUT_DIR)" $(CLIENT)

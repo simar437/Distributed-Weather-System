@@ -9,14 +9,20 @@ import java.util.Objects;
 
 public class RequestHandler {
     Socket socket;
-    BufferedReader reader;
+
+
+    SendRequest req;
+
+    String request;
 
     public RequestHandler() {}
 
     public RequestHandler(RequestHandler other) {
         try {
             this.socket = other.socket;
-            this.reader = other.reader;
+            this.req = other.req;
+            this.request = other.request;
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -27,7 +33,9 @@ public class RequestHandler {
         try {
             this.socket = s;
             System.out.println(socket.getInetAddress());
-            reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+            req = new SendRequest(s);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -35,7 +43,8 @@ public class RequestHandler {
 
     public void handle() {
         try {
-            String first = reader.readLine();
+            request = req.receive();
+            String first = request.split("\n")[0];
             AggregationServer.logEvent();
             String[] header = first.split(" ");
             String method = header[0];
@@ -44,8 +53,8 @@ public class RequestHandler {
                 String id = "";
                 if (header.length >= 2 && !Objects.equals(header[1], "/")) {
                     String[] toGet = header[1].split("/");
-                    if (!Objects.equals(toGet[toGet.length - 1], "weather")) {
-                        id = toGet[toGet.length - 1];
+                    if (toGet.length == 2) {
+                        id = toGet[1];
                     }
                 }
                 Thread t = new Thread(new HandleGET(this, AggregationServer.getCurrentState() , id));
@@ -59,15 +68,6 @@ public class RequestHandler {
             AggregationServer.logEvent();
             //close();
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    void close() {
-        try {
-            reader.close();
-            socket.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

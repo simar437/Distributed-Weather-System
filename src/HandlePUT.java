@@ -1,6 +1,8 @@
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 public class HandlePUT extends RequestHandler implements Runnable  {
@@ -9,7 +11,7 @@ public class HandlePUT extends RequestHandler implements Runnable  {
 
     int remainingTime = 30000;
 
-    public HandlePUT(RequestHandler r) {
+    public HandlePUT(RequestHandler r) throws IOException {
         super(r);
         PUTRequest();
     }
@@ -20,16 +22,6 @@ public class HandlePUT extends RequestHandler implements Runnable  {
     }
     private void PUTRequest() {
         try {
-//            reader.readLine();
-//            StringBuilder body = new StringBuilder();
-//            reader.readLine();
-//            String line;
-//            while ((line = reader.readLine()) != null) {
-//                body.append(line).append("\n");
-//            }
-
-            String request = SendRequest.receive(socket);
-            System.out.println("R: " + request);
             String[] headAndBody = SendRequest.headersAndBodySplit(request);
             String body = headAndBody[1];
             System.out.println("body: " +body);
@@ -39,6 +31,8 @@ public class HandlePUT extends RequestHandler implements Runnable  {
             for (Weather w : objs) {
                 AggregationServer.updateCurrentState(w.id, w);
             }
+
+            req.send("PUT Success");
         } catch (Exception e) {
             e.printStackTrace();
         }
