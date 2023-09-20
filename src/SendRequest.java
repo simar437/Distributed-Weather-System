@@ -1,23 +1,20 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
-import java.util.Objects;
-import java.util.Scanner;
 
 public class SendRequest {
     Socket socket;
     BufferedReader reader;
+    PrintWriter writer;
+
 
     SendRequest(Socket s) throws IOException {
         socket = s;
         reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        writer = new PrintWriter(socket.getOutputStream(), true);
     }
 
     SendRequest(String host, int port) throws IOException {
-        socket = new Socket(host, port);
-        reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        this(new Socket(host, port));
     }
 
     static String[] headersAndBodySplit(String str) {
@@ -25,21 +22,14 @@ public class SendRequest {
     }
 
     String doALL(String request) throws IOException {
-        send(socket, request);
+        send(request);
         String response = receive();
-        socket.close();
+        close();
         return response;
     }
 
 
     void send(String request) throws IOException {
-        PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
-        writer.println(request);
-        writer.println("END");
-    }
-
-    static void send(Socket s, String request) throws IOException {
-        PrintWriter writer = new PrintWriter(s.getOutputStream(), true);
         writer.println(request);
         writer.println("END");
     }
@@ -62,5 +52,9 @@ public class SendRequest {
         return response.toString();
     }
 
-
+    void close() throws IOException {
+        reader.close();
+        writer.close();
+        socket.close();
+    }
 }

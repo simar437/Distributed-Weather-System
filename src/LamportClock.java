@@ -12,6 +12,16 @@ public class LamportClock {
         return time;
     }
 
+    synchronized int updateUsingHTTPMessage(String message) {
+        int t = 0;
+        for (String s : message.split("\n")) {
+            if (s.startsWith("Lamport-Clock: ")) {
+                t = Integer.parseInt(s.split(" ")[1]);
+            }
+        }
+        return updateTime(t);
+    }
+
     @Override
     public String toString() {
         return String.valueOf(time);

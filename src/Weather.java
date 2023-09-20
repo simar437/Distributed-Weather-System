@@ -1,7 +1,30 @@
-public class Weather {
-    String id, name, state, time_zone,local_date_time,
-    local_date_time_full, cloud, wind_dir;
+public class Weather implements Comparable <Weather> {
+    String id;
+    String name;
+    String state;
+    String time_zone;
+    String local_date_time;
+    String local_date_time_full;
+    String cloud;
+    String wind_dir;
+
+
+
+    String contentServerID;
     double lat, lon, air_temp,apparent_t, dewpt, press, rel_hum, wind_spd_kmh, wind_spd_kt;
+
+
+    public int getTime() {
+        return time;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
+    }
+
+    int time;
+
+
 
     Weather() {}
 
@@ -140,4 +163,17 @@ public class Weather {
     public void setWind_spd_kt(double wind_spd_kt) {
         this.wind_spd_kt = wind_spd_kt;
     }
+    public String getContentServerID() {
+        return contentServerID;
+    }
+
+    public void setContentServerID(String contentServerID) {
+        this.contentServerID = contentServerID;
+    }
+
+    @Override
+    public int compareTo(Weather other) {
+        return Integer.compare(this.time, other.time);
+    }
+
 }

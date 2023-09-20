@@ -2,11 +2,11 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class HandlePUT extends RequestHandler implements Runnable  {
-    // HashMap<String, Weather> weatherData = new HashMap<>();
     List<Weather> whetherData;
 
     int remainingTime = 30000;
@@ -31,7 +31,7 @@ public class HandlePUT extends RequestHandler implements Runnable  {
             for (Weather w : objs) {
                 AggregationServer.updateCurrentState(w.id, w);
             }
-
+            System.out.println("State: " +AggregationServer.getCurrentState());
             req.send("PUT Success");
         } catch (Exception e) {
             e.printStackTrace();
@@ -45,10 +45,24 @@ public class HandlePUT extends RequestHandler implements Runnable  {
             e.printStackTrace();
         }
     }
-    void removePrevState(List<Weather> objs, int mili) throws InterruptedException {
-        Thread.sleep(mili);
-        for (Weather w : objs) {
-            AggregationServer.removePrevState(w.id);
+    void removePrevState(List<Weather> objs, long mili) throws InterruptedException {
+        if (objs.isEmpty()) {
+            return;
         }
+        String id = objs.get(0).getContentServerID();
+        if (AggregationServer.setReceivedTime(id, LocalDateTime.now())) {
+            return;
+        }
+        while (true) {
+            LocalDateTime t = AggregationServer.getTime(id);
+            mili = Duration.between(LocalDateTime.now(), t.plusSeconds(30)).getSeconds() * 1000;
+            if (mili <= 0) {
+                break;
+            }
+            Thread.sleep(mili);
+        }
+        System.out.println("Removing...");
+        AggregationServer.removeContentStation(id);
+        System.out.println("Removed!");
     }
 }
