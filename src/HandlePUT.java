@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class HandlePUT extends RequestHandler implements Runnable  {
-    List<Weather> whetherData;
+    List<Weather> whetherData = null;
 
     int remainingTime = 30000;
 
@@ -23,7 +23,12 @@ public class HandlePUT extends RequestHandler implements Runnable  {
     private void PUTRequest() throws IOException {
         try {
             String[] headAndBody = SendRequest.headersAndBodySplit(request);
+            if (headAndBody.length < 2 || headAndBody[1].isEmpty()) {
+                req.send("HTTP/1.1 204 No Content");
+                return;
+            }
             String body = headAndBody[1];
+
             ObjectMapper o = new ObjectMapper();
             List<Weather> objs = o.readValue(body, new TypeReference<List<Weather>>() {});
             this.whetherData = objs;
@@ -51,7 +56,7 @@ public class HandlePUT extends RequestHandler implements Runnable  {
         }
     }
     void removePrevState(List<Weather> objs, long mili) throws InterruptedException, IOException {
-        if (objs.isEmpty()) {
+        if (objs == null || objs.isEmpty()) {
             return;
         }
         String id = objs.get(0).getContentServerID();
@@ -66,8 +71,6 @@ public class HandlePUT extends RequestHandler implements Runnable  {
             }
             Thread.sleep(mili);
         }
-        System.out.println("Removing...");
         AggregationServer.removeContentStation(id);
-        System.out.println("Removed!");
     }
 }

@@ -195,7 +195,7 @@ public class Weather implements Comparable <Weather> {
 
     @Override
     public int compareTo(Weather other) {
-        return Integer.compare(this.time, other.time);
+        return -Integer.compare(this.time, other.time);
     }
 
     @Override
@@ -210,12 +210,15 @@ public class Weather implements Comparable <Weather> {
                 "wind_dir: " + wind_dir + "\n" +
                 "lat: " + lat + "\n" +
                 "lon: " + lon + "\n" +
-                "air_temp= " + air_temp + "\n" +
+                "air_temp: " + air_temp + "\n" +
                 "apparent_t: " + apparent_t + "\n" +
                 "dewpt: " + dewpt + "\n" +
                 "press: " + press + "\n" +
                 "rel_hum: " + rel_hum + "\n" +
-                "wind_spd_kmh=: " + wind_spd_kmh + "\n" +
-                "wind_spd_kt: " + wind_spd_kt + "\n";
+                "wind_spd_kmh: " + wind_spd_kmh + "\n" +
+                "wind_spd_kt: " + wind_spd_kt + "\n" +
+                "time: " + time + "\n" +
+                "CS-ID: " + contentServerID + "\n"
+                ;
     }
 }

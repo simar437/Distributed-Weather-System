@@ -37,7 +37,7 @@ public class SendRequest {
     String receive() throws IOException {
         StringBuilder response = new StringBuilder();
         String line;
-        while ((line = reader.readLine()) != null && !line.equals("END") && !line.equals("END:")) {
+        while ((line = reader.readLine()) != null && !line.equals("END")) {
             response.append(line).append("\n");
         }
         return response.toString();

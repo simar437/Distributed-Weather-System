@@ -6,8 +6,8 @@ lat:-34.9
 lon:138.6
 local_date_time:15/04:00pm
 local_date_time_full:20230715160000
-air_temp:13.3
-apparent_t:9.5
+air_temp:50
+apparent_t:96
 cloud:Partly cloudy
 dewpt:5.7
 press:1023.9
@@ -15,37 +15,20 @@ rel_hum:60
 wind_dir:S
 wind_spd_kmh:15
 wind_spd_kt:8
-id:IDS60901
-name:Adelaide (West Terrace / ngayirdapira)
-state:SA
-time_zone:CST
-lat:-34.9
-lon:138.6
-local_date_time:16/04:15pm
-local_date_time_full:20230716161500
-air_temp:14.5
-apparent_t:10.8
-cloud:Mostly sunny
-dewpt:6.2
-press:1023.5
-rel_hum:58
-wind_dir:SW
-wind_spd_kmh:16
-wind_spd_kt:9
-id:IDS60901
-name:Adelaide (West Terrace / ngayirdapira)
-state:SA
-time_zone:CST
-lat:-34.9
-lon:138.6
-local_date_time:17/04:30pm
-local_date_time_full:20230717163000
-air_temp:16.1
-apparent_t:12.3
-cloud:Clear
-dewpt:6.9
-press:1023.0
-rel_hum:56
-wind_dir:W
-wind_spd_kmh:17
+id:IDS60905
+name:Perth (Kings Park)
+state:WA
+time_zone:AWST
+lat:-31.96
+lon:115.84
+local_date_time:15/05:00pm
+local_date_time_full:20230715170000
+air_temp:50
+apparent_t:50
+cloud:Scattered clouds
+dewpt:15
+press:1019.8
+rel_hum:63
+wind_dir:SE
+wind_spd_kmh:18
 wind_spd_kt:10

@@ -1,3 +1,6 @@
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Arrays;
@@ -32,7 +35,18 @@ public class GETClient {
                     "Accept: application/json\r\n";
             SendRequest req = new SendRequest(host, port);
             String response = req.doALL(request);
-            System.out.println(response);
+            String[] data = SendRequest.headersAndBodySplit(response);
+            if (data[0].contains("OK")) {
+                ObjectMapper o = new ObjectMapper();
+                for (Weather w : o.readValue(data[1], new TypeReference<List<Weather>>() {})) {
+                    System.out.println(w);
+                    System.out.println();
+                }
+            }
+            else {
+                System.out.println("Some error occurred");
+                System.out.println(response);
+            }
         }
         catch (Exception e) {
             e.printStackTrace();

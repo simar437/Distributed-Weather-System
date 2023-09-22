@@ -23,7 +23,6 @@ public class RequestHandler {
     public RequestHandler(Socket s) {
         try {
             this.socket = s;
-            System.out.println(socket.getInetAddress());
             req = new SendRequest(s);
         } catch (Exception e) {
             e.printStackTrace();
@@ -41,6 +40,9 @@ public class RequestHandler {
             else if (request.startsWith("PUT")) {
                 Thread t = new Thread(new HandlePUT(this));
                 t.start();
+            }
+            else {
+                req.send("HTTP/1.1 400 Bad Request");
             }
         } catch (Exception e) {
             e.printStackTrace();

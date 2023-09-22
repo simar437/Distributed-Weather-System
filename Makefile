@@ -14,14 +14,15 @@ compile:
 	$(JAVAC) -cp "$(JACKSON_DIR)/*" $(SRC)/*.java -d "$(OUT_DIR)"
 
 
-aggregation_server: compile
-	$(eval ARGS := $(filter-out $@,$(MAKECMDGOALS)))
+aggregation_server:
 	$(JAVA) -cp "$(JACKSON_DIR)/*;$(OUT_DIR)" $(AGGREGATION_SERVER) $(ARGS)
 
 content_server:
-	$(eval ARGS := $(filter-out $@,$(MAKECMDGOALS)))
 	$(JAVA) -cp "$(JACKSON_DIR)/*;$(OUT_DIR)" $(CONTENT_SERVER) $(ARGS)
 
 client:
-	$(eval ARGS := $(filter-out $@,$(MAKECMDGOALS)))
 	$(JAVA) -cp "$(JACKSON_DIR)/*;$(OUT_DIR)" $(CLIENT) $(ARGS)
+
+test:
+	bash test1.sh
+	bash test2.sh

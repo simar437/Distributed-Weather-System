@@ -1,9 +1,5 @@
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.*;
-import java.net.Socket;
 import java.util.*;
 
 public class HandleGET extends RequestHandler implements Runnable {
@@ -24,10 +20,10 @@ public class HandleGET extends RequestHandler implements Runnable {
             String path = request.split(" ")[1];
             ObjectMapper o = new ObjectMapper();
             String text;
+            ArrayList<Weather> arr = new ArrayList<>();
             if (Objects.equals(path, "/")) {
-                ArrayList<Weather> arr = new ArrayList<>();
+
                 for (Map.Entry<String, PriorityQueue<Weather>> pair : currentState.entrySet()) {
-                    System.out.println(pair.getValue().size());
                     if (!pair.getValue().isEmpty()) {
                         Weather w = new Weather(pair.getValue().peek());
                         w.contentServerID = null;
@@ -35,9 +31,6 @@ public class HandleGET extends RequestHandler implements Runnable {
                         arr.add(w);
                     }
                 }
-
-
-                text = o.writeValueAsString(arr);
             } else if (path.equals("/SYNC")) {
                 String response = "HTTP/1.1 200 OK\n" +
                         "Lamport-Clock: " + AggregationServer.logEvent();
@@ -53,8 +46,9 @@ public class HandleGET extends RequestHandler implements Runnable {
                 Weather w = new Weather(currentState.get(id).peek());
                 w.contentServerID = null;
                 w.time = -1;
-                text = o.writeValueAsString(w);
+                arr.add(w);
             }
+            text = o.writeValueAsString(arr);
             String response = "HTTP/1.1 200 OK\n" +
                     "Lamport-Clock: " + AggregationServer.logEvent() + "\r\n" +
                     "Content-Type: application/json\r\n" +
