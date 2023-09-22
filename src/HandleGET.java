@@ -29,7 +29,10 @@ public class HandleGET extends RequestHandler implements Runnable {
                 for (Map.Entry<String, PriorityQueue<Weather>> pair : currentState.entrySet()) {
                     System.out.println(pair.getValue().size());
                     if (!pair.getValue().isEmpty()) {
-                        arr.add(pair.getValue().peek());
+                        Weather w = new Weather(pair.getValue().peek());
+                        w.contentServerID = null;
+                        w.time = -1;
+                        arr.add(w);
                     }
                 }
 
@@ -43,15 +46,20 @@ public class HandleGET extends RequestHandler implements Runnable {
             }
             else {
                 String id = path.substring(1);
-                text = o.writeValueAsString(currentState.get(id).peek());
+                if (!currentState.containsKey(id) || currentState.get(id).isEmpty()) {
+                    req.send("HTTP/1.1 404 Not Found\r\n");
+                    return;
+                }
+                Weather w = new Weather(currentState.get(id).peek());
+                w.contentServerID = null;
+                w.time = -1;
+                text = o.writeValueAsString(w);
             }
-            System.out.println("get reached");
-            System.out.println(text);
             String response = "HTTP/1.1 200 OK\n" +
                     "Lamport-Clock: " + AggregationServer.logEvent() + "\r\n" +
-                    "Content-Type: application/json\n" +
-                    "Content-Length:" + text.length() + "\n" +
-                    "\n" +
+                    "Content-Type: application/json\r\n" +
+                    "Content-Length:" + text.length() + "\r\n" +
+                    "\r\n" +
                     text;
             req.send(response);
         }

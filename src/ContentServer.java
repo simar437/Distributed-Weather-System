@@ -8,7 +8,19 @@ import java.util.*;
 public class ContentServer {
     public static void main(String[] args) {
         LamportClock localClock = new LamportClock();
-        String host = "localhost";
+        List<String> url = null;
+        if (args.length >= 1) {
+            url =  new ArrayList<>(Arrays.asList(args[0].split("://|:")));
+            if (url.size() == 3) {
+                url.remove(0);
+            }
+        }
+        else {
+            System.out.println("URL not provided");
+            System.exit(1);
+        }
+        String host = url.get(0);
+        int port = Integer.parseInt(url.get(1));
         final String CS_ID = String.valueOf(UUID.randomUUID());
         try {
             String sync = "GET /SYNC HTTP/1.1\r\n" +
@@ -16,11 +28,17 @@ public class ContentServer {
                     "Lamport-Clock: " + localClock.logCurrentEvent() + "\r\n" +
                     "CS-ID: " + CS_ID + "\r\n" +
                     "\r\n";
-            SendRequest r = new SendRequest(host, 4567);
+            SendRequest r = new SendRequest(host, port);
             String syncMessage = r.doALL(sync);
             localClock.updateUsingHTTPMessage(syncMessage);
 
-            for (String file : args) {
+            List<String> files =  new ArrayList<>(Arrays.asList(args));
+            files.remove(0);
+            if (files.isEmpty()) {
+                System.out.println("No files provided!");
+                System.exit(1);
+            }
+            for (String file : files) {
                 Scanner sc = new Scanner(new FileReader(file));
                 List<ObjectNode> jsonObjects = new ArrayList<>();
                 ObjectMapper objectMapper = new ObjectMapper();
@@ -59,8 +77,8 @@ public class ContentServer {
 
                 SendRequest req = new SendRequest(host, 4567);
                 System.out.println(req.doALL(request));
+                Thread.sleep(28000);
             }
-
         }
         catch (Exception e) {
             e.printStackTrace();

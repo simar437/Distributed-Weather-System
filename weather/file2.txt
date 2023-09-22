@@ -1,68 +1,85 @@
-file1.txtid:IDS60901
-name:Adelaide (West Terrace /  ngayirdapira)
-state: SA
+id:IDS60905
+name:Perth (Kings Park)
+state:WA
+time_zone:AWST
+lat:-31.96
+lon:115.84
+local_date_time:15/05:00pm
+local_date_time_full:20230715170000
+air_temp:21.7
+apparent_t:22.8
+cloud:Scattered clouds
+dewpt:14.3
+press:1019.8
+rel_hum:63
+wind_dir:SE
+wind_spd_kmh:18
+wind_spd_kt:10
+id:IDS60906
+name:Adelaide (Glenelg Beach)
+state:SA
 time_zone:CST
-lat:-34.9
-lon:138.6
-local_date_time:15/04:00pm
-local_date_time_full:20230715160000
-air_temp:13.3
-apparent_t:9.5
+lat:-34.98
+lon:138.51
+local_date_time:15/05:15pm
+local_date_time_full:20230715171500
+air_temp:16.5
+apparent_t:15.1
 cloud:Partly cloudy
-dewpt:123456
-press:1023.9
-rel_hum:60
-wind_dir:S
+dewpt:8.7
+press:1021.5
+rel_hum:58
+wind_dir:NE
+wind_spd_kmh:14
+wind_spd_kt:7
+id:IDS60907
+name:Sydney (Bondi Beach)
+state:NSW
+time_zone:EST
+lat:-33.89
+lon:151.27
+local_date_time:15/05:30pm
+local_date_time_full:20230715173000
+air_temp:20.3
+apparent_t:21.7
+cloud:Mostly clear
+dewpt:13.8
+press:1020.0
+rel_hum:70
+wind_dir:W
+wind_spd_kmh:8
+wind_spd_kt:4
+id:IDS60908
+name:Brisbane (South Brisbane)
+state:QLD
+time_zone:AEST
+lat:-27.48
+lon:153.03
+local_date_time:15/05:45pm
+local_date_time_full:20230715174500
+air_temp:25.1
+apparent_t:26.4
+cloud:Partly cloudy
+dewpt:16.2
+press:1019.3
+rel_hum:57
+wind_dir:SSE
 wind_spd_kmh:15
 wind_spd_kt:8
-id:IDS60902
-name:Adelaide (West Terrace /  ngayirdapira)
-state: SA
-time_zone:CST
-lat:-34.9
-lon:138.6
-local_date_time:15/04:00pm
-local_date_time_full:20230715160000
-air_temp:13.3
-apparent_t:9.5
-cloud:Partly cloudy
-dewpt:5.7
-press:1023.9
-rel_hum:60
-wind_dir:S
-wind_spd_kmh:15
-wind_spd_kt:8
-id:IDS60903
-name:Adelaide (West Terrace /  ngayirdapira)
-state: SA
-time_zone:CST
-lat:-34.9
-lon:138.6
-local_date_time:15/04:00pm
-local_date_time_full:20230715160000
-air_temp:13.3
-apparent_t:9.5
-cloud:Partly cloudy
-dewpt:5.7
-press:1023.9
-rel_hum:60
-wind_dir:S
-wind_spd_kmh:15
-wind_spd_kt:8
-id:IDS60901
-name:Adelaide (West Terrace /  ngayirdapira)
-state: SA
-time_zone:CST
-lat:-34.9
-lon:138.6
-local_date_time:15/04:00pm
-local_date_time_full:20230715160000
-air_temp:13.3
-apparent_t:9.5
-cloud:Partly cloudy
-dewpt:5.7
-press:1023.9
-rel_hum:60
-wind_dir:S
-wind_spd_kmh:15
-wind_spd_kt:8
+id:IDS60909
+name:Melbourne (St Kilda Beach)
+state:VIC
+time_zone:AEDT
+lat:-37.86
+lon:144.98
+local_date_time:15/06:00pm
+local_date_time_full:20230715180000
+air_temp:18.9
+apparent_t:17.2
+cloud:Clear
+dewpt:9.4
+press:1022.8
+rel_hum:54
+wind_dir:E
+wind_spd_kmh:11
+wind_spd_kt:6

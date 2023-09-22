@@ -20,20 +20,25 @@ public class HandlePUT extends RequestHandler implements Runnable  {
         this.whetherData = objs;
         this.remainingTime = remainingTime;
     }
-    private void PUTRequest() {
+    private void PUTRequest() throws IOException {
         try {
             String[] headAndBody = SendRequest.headersAndBodySplit(request);
             String body = headAndBody[1];
-            System.out.println("body: " +body);
             ObjectMapper o = new ObjectMapper();
             List<Weather> objs = o.readValue(body, new TypeReference<List<Weather>>() {});
             this.whetherData = objs;
             for (Weather w : objs) {
                 AggregationServer.updateCurrentState(w.id, w);
             }
-            System.out.println("State: " +AggregationServer.getCurrentState());
-            req.send("PUT Success");
+            String csID = objs.get(0).contentServerID;
+            if (AggregationServer.getTime(csID) == null) {
+                req.send("HTTP/1.1 201 OK\r\n");
+            }
+            else {
+                req.send("HTTP/1.1 200 OK\r\n");
+            }
         } catch (Exception e) {
+            req.send("HTTP/1.1 500 Internal Server Error\r\n");
             e.printStackTrace();
         }
     }
@@ -41,11 +46,11 @@ public class HandlePUT extends RequestHandler implements Runnable  {
     public void run() {
         try {
             removePrevState(whetherData, remainingTime);
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    void removePrevState(List<Weather> objs, long mili) throws InterruptedException {
+    void removePrevState(List<Weather> objs, long mili) throws InterruptedException, IOException {
         if (objs.isEmpty()) {
             return;
         }

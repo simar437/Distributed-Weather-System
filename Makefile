@@ -5,7 +5,7 @@ SRC = src
 JACKSON_DIR = lib/jackson
 AGGREGATION_SERVER = AggregationServer
 CONTENT_SERVER = ContentServer
-OUT_DIR := out/production/A2_DS
+OUT_DIR := out
 CLIENT = GETClient
 
 default: compile
@@ -15,10 +15,13 @@ compile:
 
 
 aggregation_server: compile
-	$(JAVA) -cp "$(JACKSON_DIR)/*;$(OUT_DIR)" $(AGGREGATION_SERVER)
+	$(eval ARGS := $(filter-out $@,$(MAKECMDGOALS)))
+	$(JAVA) -cp "$(JACKSON_DIR)/*;$(OUT_DIR)" $(AGGREGATION_SERVER) $(ARGS)
 
 content_server:
-	$(JAVA) -cp "$(JACKSON_DIR)/*;$(OUT_DIR)" $(CONTENT_SERVER)
+	$(eval ARGS := $(filter-out $@,$(MAKECMDGOALS)))
+	$(JAVA) -cp "$(JACKSON_DIR)/*;$(OUT_DIR)" $(CONTENT_SERVER) $(ARGS)
 
 client:
-	$(JAVA) -cp "$(JACKSON_DIR)/*;$(OUT_DIR)" $(CLIENT)
+	$(eval ARGS := $(filter-out $@,$(MAKECMDGOALS)))
+	$(JAVA) -cp "$(JACKSON_DIR)/*;$(OUT_DIR)" $(CLIENT) $(ARGS)

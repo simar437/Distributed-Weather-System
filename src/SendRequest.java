@@ -34,15 +34,6 @@ public class SendRequest {
         writer.println("END");
     }
 
-//    static String receive(Socket s) throws IOException {
-//        Scanner sc = new Scanner(s.getInputStream());
-//        StringBuilder response = new StringBuilder();
-//        while (sc.hasNext()) {
-//            response.append(sc.nextLine());
-//        }
-//        return response.toString();
-//    }
-
     String receive() throws IOException {
         StringBuilder response = new StringBuilder();
         String line;

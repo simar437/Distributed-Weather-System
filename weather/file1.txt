@@ -1,6 +1,6 @@
 id:IDS60901
-name:Adelaide (West Terrace /  ngayirdapira)
-state: SA
+name:Adelaide (West Terrace / ngayirdapira)
+state:SA
 time_zone:CST
 lat:-34.9
 lon:138.6
@@ -16,53 +16,53 @@ wind_dir:S
 wind_spd_kmh:15
 wind_spd_kt:8
 id:IDS60902
-name:Adelaide (West Terrace /  ngayirdapira)
-state: SA
-time_zone:CST
-lat:-34.9
-lon:138.6
-local_date_time:15/04:00pm
-local_date_time_full:20230715160000
-air_temp:13.3
-apparent_t:9.5
-cloud:Partly cloudy
-dewpt:5.7
-press:1023.9
-rel_hum:60
-wind_dir:S
-wind_spd_kmh:15
-wind_spd_kt:8
+name:Sydney (Central Business District)
+state:NSW
+time_zone:EST
+lat:-33.87
+lon:151.21
+local_date_time:15/04:15pm
+local_date_time_full:20230715161500
+air_temp:18.5
+apparent_t:17.2
+cloud:Mostly sunny
+dewpt:12.1
+press:1020.4
+rel_hum:72
+wind_dir:NW
+wind_spd_kmh:10
+wind_spd_kt:5
 id:IDS60903
-name:Adelaide (West Terrace /  ngayirdapira)
-state: SA
-time_zone:CST
-lat:-34.9
-lon:138.6
-local_date_time:15/04:00pm
-local_date_time_full:20230715160000
-air_temp:13.3
-apparent_t:9.5
+name:Brisbane (Southbank / Kurilpa)
+state:QLD
+time_zone:AEST
+lat:-27.47
+lon:153.03
+local_date_time:15/04:30pm
+local_date_time_full:20230715163000
+air_temp:26.8
+apparent_t:28.4
+cloud:Clear
+dewpt:15.2
+press:1018.7
+rel_hum:51
+wind_dir:E
+wind_spd_kmh:20
+wind_spd_kt:11
+id:IDS60904
+name:Melbourne (Federation Square)
+state:VIC
+time_zone:AEDT
+lat:-37.81
+lon:144.97
+local_date_time:15/04:45pm
+local_date_time_full:20230715164500
+air_temp:15.9
+apparent_t:14.2
 cloud:Partly cloudy
-dewpt:5.7
-press:1023.9
-rel_hum:60
-wind_dir:S
-wind_spd_kmh:15
-wind_spd_kt:8
-id:IDS60901
-name:Adelaide (West Terrace /  ngayirdapira)
-state: SA
-time_zone:CST
-lat:-34.9
-lon:138.6
-local_date_time:15/04:00pm
-local_date_time_full:20230715160000
-air_temp:13.3
-apparent_t:9.5
-cloud:Partly cloudy
-dewpt:5.7
-press:1023.9
-rel_hum:60
-wind_dir:S
-wind_spd_kmh:15
-wind_spd_kt:8
+dewpt:8.4
+press:1022.1
+rel_hum:62
+wind_dir:SW
+wind_spd_kmh:12
+wind_spd_kt:6

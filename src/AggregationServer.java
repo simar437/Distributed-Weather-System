@@ -2,21 +2,60 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.time.LocalDateTime;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.PriorityQueue;
 
 public class AggregationServer {
     static private LamportClock localClock = new LamportClock();
-    static Scanner sc;
+    static private HashMap<String, PriorityQueue<Weather>> currentState = new HashMap<>();
+    static HashMap<String, LocalDateTime> receivedTime = new HashMap<>();
 
-    static private final HashMap<String, PriorityQueue<Weather>> currentState = new HashMap<>();
+    // Code for backup (not working currently)
+
+
+
+    /* static Backup b = new Backup("AS");
+
+
+    static class ASBackup {
+        @JsonSerialize(using = ToStringSerializer.class)
+        private LamportClock localClock;
+
+        @JsonProperty("receivedTime")
+        private HashMap<String, LocalDateTime> receivedTime;
+
+        @JsonProperty("currentState")
+        private HashMap<String, PriorityQueue<Weather>> currentState;
+
+        static void createBackup() throws IOException {
+            ASBackup data = new ASBackup();
+            data.localClock = AggregationServer.localClock;
+            data.receivedTime = AggregationServer.receivedTime;
+            data.currentState = AggregationServer.currentState;
+            b.initiateBackup(data);
+        }
+
+        static void restoreBackup() throws IOException {
+            ASBackup data = (ASBackup) b.restore(new ASBackup());
+            if (data == null) {
+                return;
+            }
+            AggregationServer.currentState = data.currentState;
+            AggregationServer.localClock = data.localClock;
+            AggregationServer.receivedTime = data.receivedTime;
+        }
+
+
+    } */
 
     synchronized static void updateCurrentState(String id, Weather w) throws IOException {
         if (!currentState.containsKey(id)) {
             currentState.put(id, new PriorityQueue<>());
         }
         currentState.get(id).add(w);
-        Backup.initiateBackup(getCurrentState());
+        // ASBackup.createBackup();
     }
 
     synchronized static HashMap<String, PriorityQueue<Weather>> getCurrentState() {
@@ -26,15 +65,15 @@ public class AggregationServer {
         }
         return copy;
     }
-    synchronized static void removeContentStation(String id) {
+    synchronized static void removeContentStation(String id) throws IOException {
         for (Map.Entry<String, PriorityQueue<Weather>> i : currentState.entrySet()) {
             PriorityQueue<Weather> weatherQueue = i.getValue();
             weatherQueue.removeIf(w -> Objects.equals(w.contentServerID, id));
         }
+        // ASBackup.createBackup();
     }
 
 
-    static HashMap<String, LocalDateTime> receivedTime = new HashMap<>();
 
     public synchronized static LocalDateTime getTime(String CS_ID) {
         return receivedTime.get(CS_ID);
@@ -59,8 +98,12 @@ public class AggregationServer {
     }
     public static void main(String[] args) {
         try {
-            // Backup.restore();
-            ServerSocket ss = new ServerSocket(4567);
+            // ASBackup.restoreBackup();
+            int port = 4567;
+            if (args.length == 1) {
+                port = Integer.parseInt(args[0]);
+            }
+            ServerSocket ss = new ServerSocket(port);
             System.out.println("Server running...");
             while (true) {
                 Socket s = ss.accept();

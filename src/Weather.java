@@ -13,6 +13,28 @@ public class Weather implements Comparable <Weather> {
     String contentServerID;
     double lat, lon, air_temp,apparent_t, dewpt, press, rel_hum, wind_spd_kmh, wind_spd_kt;
 
+    public Weather(Weather other) {
+        this.id = other.id;
+        this.name = other.name;
+        this.state = other.state;
+        this.time_zone = other.time_zone;
+        this.local_date_time = other.local_date_time;
+        this.local_date_time_full = other.local_date_time_full;
+        this.cloud = other.cloud;
+        this.wind_dir = other.wind_dir;
+        this.contentServerID = other.contentServerID;
+        this.lat = other.lat;
+        this.lon = other.lon;
+        this.air_temp = other.air_temp;
+        this.apparent_t = other.apparent_t;
+        this.dewpt = other.dewpt;
+        this.press = other.press;
+        this.rel_hum = other.rel_hum;
+        this.wind_spd_kmh = other.wind_spd_kmh;
+        this.wind_spd_kt = other.wind_spd_kt;
+        this.time = other.time;
+    }
+
 
     public int getTime() {
         return time;
@@ -176,4 +198,24 @@ public class Weather implements Comparable <Weather> {
         return Integer.compare(this.time, other.time);
     }
 
+    @Override
+    public String toString() {
+        return "id: " + id + "\n" +
+                "name: " + name + "\n" +
+                "state: " + state + "\n" +
+                "time_zone: " + time_zone + "\n" +
+                "local_date_time: " + local_date_time + "\n" +
+                "local_date_time_full: " + local_date_time_full + "\n" +
+                "cloud: " + cloud + "\n" +
+                "wind_dir: " + wind_dir + "\n" +
+                "lat: " + lat + "\n" +
+                "lon: " + lon + "\n" +
+                "air_temp= " + air_temp + "\n" +
+                "apparent_t: " + apparent_t + "\n" +
+                "dewpt: " + dewpt + "\n" +
+                "press: " + press + "\n" +
+                "rel_hum: " + rel_hum + "\n" +
+                "wind_spd_kmh=: " + wind_spd_kmh + "\n" +
+                "wind_spd_kt: " + wind_spd_kt + "\n";
+    }
 }
