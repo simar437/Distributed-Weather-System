@@ -216,9 +216,7 @@ public class Weather implements Comparable <Weather> {
                 "press: " + press + "\n" +
                 "rel_hum: " + rel_hum + "\n" +
                 "wind_spd_kmh: " + wind_spd_kmh + "\n" +
-                "wind_spd_kt: " + wind_spd_kt + "\n" +
-                "time: " + time + "\n" +
-                "CS-ID: " + contentServerID + "\n"
+                "wind_spd_kt: " + wind_spd_kt + "\n"
                 ;
     }
 }

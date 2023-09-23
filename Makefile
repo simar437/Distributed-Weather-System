@@ -23,6 +23,10 @@ content_server:
 client:
 	$(JAVA) -cp "$(JACKSON_DIR)/*;$(OUT_DIR)" $(CLIENT) $(ARGS)
 
+.PHONY: test
 test:
-	bash test1.sh
-	bash test2.sh
+	bash test/test1.sh
+	bash test/test2.sh
+	bash test/test3.sh
+	bash test/test4.sh
+	bash test/test5.sh
