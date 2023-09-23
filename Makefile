@@ -15,13 +15,13 @@ compile:
 
 
 aggregation_server:
-	$(JAVA) -cp "$(JACKSON_DIR)/*;$(OUT_DIR)" $(AGGREGATION_SERVER) $(ARGS)
+	$(JAVA) -cp "$(JACKSON_DIR)/*" -cp "$(OUT_DIR)" $(AGGREGATION_SERVER) $(ARGS)
 
 content_server:
-	$(JAVA) -cp "$(JACKSON_DIR)/*;$(OUT_DIR)" $(CONTENT_SERVER) $(ARGS)
+	$(JAVA) -cp "$(JACKSON_DIR)/*" -cp "$(OUT_DIR)" $(CONTENT_SERVER) $(ARGS)
 
 client:
-	$(JAVA) -cp "$(JACKSON_DIR)/*;$(OUT_DIR)" $(CLIENT) $(ARGS)
+	$(JAVA) -cp "$(JACKSON_DIR)/*" -cp "$(OUT_DIR)" $(CLIENT) $(ARGS)
 
 .PHONY: test
 test:
