@@ -1,3 +1,7 @@
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -16,11 +20,13 @@ public class AggregationServer {
 
 
 
-    /* static Backup b = new Backup("AS");
+    static Backup b = new Backup("AS");
 
 
     static class ASBackup {
         @JsonSerialize(using = ToStringSerializer.class)
+
+        @JsonProperty("localClock")
         private LamportClock localClock;
 
         @JsonProperty("receivedTime")
@@ -29,7 +35,7 @@ public class AggregationServer {
         @JsonProperty("currentState")
         private HashMap<String, PriorityQueue<Weather>> currentState;
 
-        static void createBackup() throws IOException {
+        static synchronized void createBackup() throws IOException {
             ASBackup data = new ASBackup();
             data.localClock = AggregationServer.localClock;
             data.receivedTime = AggregationServer.receivedTime;
@@ -37,7 +43,7 @@ public class AggregationServer {
             b.initiateBackup(data);
         }
 
-        static void restoreBackup() throws IOException {
+        static synchronized void restoreBackup() throws IOException {
             ASBackup data = (ASBackup) b.restore(new ASBackup());
             if (data == null) {
                 return;
@@ -46,16 +52,14 @@ public class AggregationServer {
             AggregationServer.localClock = data.localClock;
             AggregationServer.receivedTime = data.receivedTime;
         }
-
-
-    } */
+    }
 
     synchronized static void updateCurrentState(String id, Weather w) throws IOException {
         if (!currentState.containsKey(id)) {
             currentState.put(id, new PriorityQueue<>());
         }
         currentState.get(id).add(w);
-        // ASBackup.createBackup();
+        ASBackup.createBackup();
     }
 
     synchronized static HashMap<String, PriorityQueue<Weather>> getCurrentState() {
@@ -70,7 +74,7 @@ public class AggregationServer {
             PriorityQueue<Weather> weatherQueue = i.getValue();
             weatherQueue.removeIf(w -> Objects.equals(w.contentServerID, id));
         }
-        // ASBackup.createBackup();
+        ASBackup.createBackup();
     }
 
 
@@ -98,7 +102,7 @@ public class AggregationServer {
     }
     public static void main(String[] args) {
         try {
-            // ASBackup.restoreBackup();
+            ASBackup.restoreBackup();
             int port = 4567;
             if (args.length == 1) {
                 port = Integer.parseInt(args[0]);

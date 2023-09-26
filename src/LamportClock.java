@@ -1,6 +1,12 @@
 import java.lang.Math;
 
 public class LamportClock {
+
+    LamportClock(String time) {
+        this.time = Integer.parseInt(time);
+    }
+
+    LamportClock() {}
     private int time = 0;
 
     synchronized int logCurrentEvent() {

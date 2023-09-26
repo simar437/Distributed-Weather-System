@@ -1,5 +1,6 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -39,12 +40,15 @@ public class Backup {
 
         String text = new String(Files.readAllBytes(Paths.get(directory + "/" + files[files.length - 1])));
         ObjectMapper o = new ObjectMapper();
+        o.registerModule(new JavaTimeModule());
+
         obj = o.readValue(text, obj.getClass());
         return obj;
     }
     void initiateBackup(Object obj) throws IOException {
-        FileWriter f = new FileWriter(directory + "/backup" + num +".txt");
+        FileWriter f = new FileWriter(directory + "/backup" + num++ +".txt");
         ObjectMapper o = new ObjectMapper();
+        o.registerModule(new JavaTimeModule());
         o.enable(SerializationFeature.INDENT_OUTPUT);
         f.write(o.writeValueAsString(obj));
         f.close();
