@@ -3,7 +3,7 @@ JAVA = java
 SRC = src
 
 # Determine the appropriate path separator based on the OS
-ifeq ($(OS),Windows_NT)
+ifeq ($(OS), Windows_NT)
     PATH_SEPARATOR = ;
 else
     PATH_SEPARATOR = :

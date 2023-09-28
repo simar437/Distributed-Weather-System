@@ -30,15 +30,22 @@ public class SendRequest {
 
 
     void send(String request) throws IOException {
+        // System.out.println(request);
         writer.println(request);
-        writer.println("END");
+        // writer.println("END");
     }
 
     String receive() throws IOException {
         StringBuilder response = new StringBuilder();
         String line;
-        while ((line = reader.readLine()) != null && !line.equals("END")) {
+        while ((line = reader.readLine()) != null && !line.isEmpty()) {
             response.append(line).append("\n");
+        }
+        response.append("\n");
+        if (response.toString().contains("Content-Length:")) {
+            while ((line = reader.readLine()) != null && !line.isEmpty()) {
+                response.append(line).append("\n");
+            }
         }
         return response.toString();
     }

@@ -21,8 +21,7 @@ public class HandleGET extends RequestHandler implements Runnable {
             ObjectMapper o = new ObjectMapper();
             String text;
             ArrayList<Weather> arr = new ArrayList<>();
-            if (Objects.equals(path, "/")) {
-
+            if (path.equals("/") || path.equals("/weather") || path.equals("/weather/")) {
                 for (Map.Entry<String, PriorityQueue<Weather>> pair : currentState.entrySet()) {
                     if (!pair.getValue().isEmpty()) {
                         Weather w = new Weather(pair.getValue().peek());
@@ -32,15 +31,32 @@ public class HandleGET extends RequestHandler implements Runnable {
                     }
                 }
             } else if (path.equals("/SYNC")) {
-                String response = "HTTP/1.1 200 OK\n" +
-                        "Lamport-Clock: " + AggregationServer.logEvent();
+
+                String body = "Lamport Clock Time is " + AggregationServer.logEvent() + "\r\n";
+                String response = "HTTP/1.1 200 OK\r\n" +
+                        "Lamport-Clock: " +  AggregationServer.getASTime() + "\r\n" +
+                        "Content-Type: text/plain\r\n" +
+                        "Content-Length: " + body.length() + "\r\n" +
+                        "\r\n" +
+                        body;
+
                 req.send(response);
                 return;
             }
             else {
-                String id = path.substring(1);
-                if (!currentState.containsKey(id) || currentState.get(id).isEmpty()) {
-                    req.send("HTTP/1.1 404 Not Found\r\n");
+                String id = null;
+                if (path.startsWith("/weather/")) {
+                    id = path.substring(path.lastIndexOf("/") + 1);
+                }
+                if (id == null || !currentState.containsKey(id) || currentState.get(id).isEmpty()) {
+                    req.send("HTTP/1.1 404 Not Found\r\n" +
+                            "Lamport-Clock: " + AggregationServer.logEvent() + "\r\n" +
+                            "Content-Type: text/plain\r\n" +
+                            "Content-Length: 96\r\n" +
+                            "\r\n" +
+                            "The requested resource could not be found on the server. " +
+                            "Please check the URL and try again.\r\n\r\n"
+                    );
                     return;
                 }
                 Weather w = new Weather(currentState.get(id).peek());
@@ -48,13 +64,14 @@ public class HandleGET extends RequestHandler implements Runnable {
                 w.time = -1;
                 arr.add(w);
             }
+
             text = o.writeValueAsString(arr);
-            String response = "HTTP/1.1 200 OK\n" +
+            String response = "HTTP/1.1 200 OK\r\n" +
                     "Lamport-Clock: " + AggregationServer.logEvent() + "\r\n" +
                     "Content-Type: application/json\r\n" +
-                    "Content-Length:" + text.length() + "\r\n" +
+                    "Content-Length: " + text.length() + "\r\n" +
                     "\r\n" +
-                    text;
+                    text + "\r\n";
             req.send(response);
         }
         catch (Exception e) {

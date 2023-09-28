@@ -35,7 +35,7 @@ Change the shell as per availability, I am using ```bash```
 - Overridden the ```compateTo``` method in ```Weather``` to maintain order in the ```PriorityQueue``` using the lamport time-stamp sent by the content server.
 
 # TODO
-- Backup
-- Remove data older than 20 updates (Remove after 30 sec works)
 - Documentation
-- Make Standard Compliant (Currently requires "END" keyword at the end of a request)
+- Test cases
+- README
+- Rebuild threads after failure

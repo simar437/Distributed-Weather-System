@@ -29,7 +29,7 @@ public class GETClient {
             if (args.length == 2) {
                 stationId = args[1];
             }
-            String request = "GET /" + stationId + " HTTP/1.1\r\n" +
+            String request = "GET /weather/" + stationId + " HTTP/1.1\r\n" +
                     "Host:" + host +"\r\n" +
                     "User-Agent: C-" + id + "\r\n" +
                     "Accept: application/json\r\n";

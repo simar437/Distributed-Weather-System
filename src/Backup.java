@@ -16,7 +16,7 @@ public class Backup {
     String directory;
 
     Backup(String directory) {
-        this.directory = directory;
+        this.directory = directory + " Backup";
         File dir = new File(this.directory);
         if (!dir.exists()){
             dir.mkdirs();
@@ -52,6 +52,22 @@ public class Backup {
         o.enable(SerializationFeature.INDENT_OUTPUT);
         f.write(o.writeValueAsString(obj));
         f.close();
+
+        if (num > 21) {
+            destroyOldBackup();
+        }
+    }
+
+    // destroy backup older than 20
+    private void destroyOldBackup() {
+        File f = new File(directory + "/backup" + (num - 20) + ".txt");
+        f.delete();
+    }
+
+    // destroy backup directory
+    void destroyBackup() {
+        File dir = new File(directory);
+        dir.delete();
     }
 
 }
