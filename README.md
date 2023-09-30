@@ -38,4 +38,3 @@ Change the shell as per availability, I am using ```bash```
 - Documentation
 - Test cases
 - README
-- Rebuild threads after failure

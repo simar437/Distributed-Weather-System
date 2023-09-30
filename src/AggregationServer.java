@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.PriorityQueue;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AggregationServer {
     static HashMap<String, LocalDateTime> receivedTime = new HashMap<>();
@@ -115,6 +114,10 @@ public class AggregationServer {
             AggregationServer.localClock = data.localClock;
             AggregationServer.receivedTime = data.receivedTime;
             AggregationServer.port = data.port;
+            for (Map.Entry<String, LocalDateTime> entry : AggregationServer.receivedTime.entrySet()) {
+                Thread t = new Thread(new HandlePUT(entry.getKey()));
+                t.start();
+            }
         }
     }
 }

@@ -42,7 +42,7 @@ public class RequestHandler {
                 t.start();
             }
             else {
-                req.send("HTTP/1.1 400 Bad Request");
+                req.send("HTTP/1.1 400 Bad Request\r\n\r\n");
             }
         } catch (Exception e) {
             e.printStackTrace();
