@@ -8,6 +8,10 @@ public class RequestHandler {
 
     public RequestHandler() {}
 
+    /**
+     * Copy constructor
+     * @param other The RequestHandler object to be copied
+     */
     public RequestHandler(RequestHandler other) {
         try {
             this.socket = other.socket;
@@ -20,6 +24,10 @@ public class RequestHandler {
     }
 
 
+    /**
+     * Constructor
+     * @param s The socket to be used
+     */
     public RequestHandler(Socket s) {
         try {
             this.socket = s;
@@ -29,6 +37,11 @@ public class RequestHandler {
         }
     }
 
+    /**
+     * Handles the request
+     * If the request is a GET request, a new thread of HandleGET is created to handle the request.
+     * If the request is a PUT request, a new thread of HandlePUT is created to handle the request.
+     */
     public void handle() {
         try {
             request = req.receive();

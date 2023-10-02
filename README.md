@@ -35,6 +35,5 @@ Change the shell as per availability, I am using ```bash```
 - Overridden the ```compateTo``` method in ```Weather``` to maintain order in the ```PriorityQueue``` using the lamport time-stamp sent by the content server.
 
 # TODO
-- Documentation
 - Test cases
 - README
