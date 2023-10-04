@@ -88,7 +88,7 @@ public class Weather implements Comparable<Weather> {
     }
 
     /**
-     * Compares two Weather objects by their time and contentServerID
+     * Compares two Weather objects by their time and PID
      * if the time is equal, the PID is used to break the tie
      * else the time is used to sort the PriorityQueue
      *

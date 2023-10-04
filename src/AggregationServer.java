@@ -18,7 +18,7 @@ public class AggregationServer {
     static int noOfCS = 0;
     static int port = 4567;
     static private LamportClock localClock = new LamportClock();
-    // HashMap of content station id to weather data with highest priority by Lamport timestamp of the content station
+    // HashMap of content station id to weather data with the highest priority by Lamport timestamp of the content station
     static private HashMap<String, PriorityQueue<Weather>> currentState = new HashMap<>();
     // HashMap of content station id to process id
     static private HashMap<String, Integer> pid = new HashMap<>();
@@ -149,8 +149,19 @@ public class AggregationServer {
                 port = Integer.parseInt(args[0]);
             }
 
-            // Start server
             ServerSocket ss = new ServerSocket(port);
+            // Create a shutdown hook to release the port gracefully
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                try {
+                    System.out.println("Shutting down...");
+                    // Release resources, close the server socket, etc.
+                    ss.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }));
+
+            // Start server
             System.out.println("Server running...");
             while (true) {
                 Socket s = ss.accept();

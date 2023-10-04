@@ -46,12 +46,13 @@ public class GETClient {
                 }
             }
             else {
-                System.out.println("Some error occurred");
+                System.out.println("The Server sent: ");
                 System.out.println(response);
             }
         }
-        catch (Exception e) {
-            e.printStackTrace();
+        catch (Exception ignored) {
+            System.out.println("Some error occurred");
+            System.out.println("Check if the Aggregation server is running and the URL is correct");
         }
     }
 }

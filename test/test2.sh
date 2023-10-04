@@ -1,7 +1,7 @@
 echo "Test for multiple clients"
 echo "---------------------------------------------------------------------------"
 
-make content_server ARGS="localhost:4567 weather/file1.txt" &
+make content_server ARGS="CS1 localhost:4567 weather/file1.txt" &
 
 c1=$(make client ARGS="localhost:4567 IDS60901") &
 c2=$(make client ARGS="localhost:4567 IDS60901") &

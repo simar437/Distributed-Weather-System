@@ -28,7 +28,7 @@ public class HandlePUT extends RequestHandler implements Runnable  {
 
             // If the body is empty, send 204 No Content
             if (headAndBody.length < 2 || headAndBody[1].isEmpty()) {
-                req.send("HTTP/1.1 204 No Content");
+                req.send("HTTP/1.1 204 No Content\r\n\r\n");
                 return;
             }
             String body = headAndBody[1];
@@ -49,8 +49,8 @@ public class HandlePUT extends RequestHandler implements Runnable  {
                     Date date2 = dateFormat.parse(o2.local_date_time_full);
                     int comp = date1.compareTo(date2);
                     return comp > 0 ? 1 : 0;
-                } catch (ParseException e) {
-                    throw new RuntimeException(e);
+                } catch (ParseException ignored) {
+                    return 0;
                 }
             });
             objs.addAll(s);
@@ -100,9 +100,12 @@ public class HandlePUT extends RequestHandler implements Runnable  {
      * If the Content Server has not given an update for 30 seconds, remove the Content Server
      */
     void removePrevState(String CS_ID) throws InterruptedException, IOException {
+        // Update the last received time of the Content Server to the current time
+        // If a thread is already running to remove the Content Server, return
         if (AggregationServer.setReceivedTime(CS_ID, LocalDateTime.now())) {
             return;
         }
+        // If the Content Server has not given an update for 30 seconds, remove the Content Server
         while (true) {
             LocalDateTime t = AggregationServer.getTime(CS_ID);
             long mili = Duration.between(LocalDateTime.now(), t.plusSeconds(30)).getSeconds() * 1000;

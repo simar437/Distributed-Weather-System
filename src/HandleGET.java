@@ -79,7 +79,7 @@ public class HandleGET extends RequestHandler implements Runnable {
 
                 // Handle Invalid request
                 if (id == null || !currentState.containsKey(id) || currentState.get(id).isEmpty()) {
-                    req.send("HTTP/1.1 404 Not Found\r\n" +
+                    req.send("HTTP/1.1 400 Bad Request\r\n" +
                             "Lamport-Clock: " + AggregationServer.logEvent() + "\r\n" +
                             "Content-Type: text/plain\r\n" +
                             "Content-Length: 96\r\n" +
