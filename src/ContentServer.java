@@ -132,7 +132,6 @@ public class ContentServer {
                 }
 
                 String text = jsonObjects.toString();
-                System.out.println(text);
                 String request = "PUT /weather.json HTTP/1.1\r\n" +
                         "User-Agent: ATOMClient/1/0\r\n" +
                         "Lamport-Clock: " + c.localClock + "\r\n" +
