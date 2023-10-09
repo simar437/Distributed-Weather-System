@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 public class HandlePUT extends RequestHandler implements Runnable  {
     String id;
+    boolean toRemove = false;
     public HandlePUT(RequestHandler r) throws IOException {
         super(r);
         PUTRequest();
@@ -16,6 +17,7 @@ public class HandlePUT extends RequestHandler implements Runnable  {
 
     public HandlePUT(String id) {
         this.id = id;
+        this.toRemove = true;
     }
 
     /**
@@ -65,17 +67,20 @@ public class HandlePUT extends RequestHandler implements Runnable  {
 
             // If the Aggregation Server has not received any data from the Content Server, send 201 Created
             // Else, send 200 OK
-            if (AggregationServer.getTime(csID) == null) {
+            if (!AggregationServer.PIDContainsCS(csID)) {
                 req.send("HTTP/1.1 201 OK\r\n\r\n");
                 AggregationServer.addContentStation(csID);
+                toRemove = true;
             }
             else {
                 req.send("HTTP/1.1 200 OK\r\n\r\n");
             }
+            AggregationServer.setReceivedTime(csID, LocalDateTime.now());
         } catch (Exception e) {
             // If there is an error, send 500 Internal Server Error
             req.send("HTTP/1.1 500 Internal Server Error\r\n");
         }
+        AggregationServer.ASBackup.createBackup();
     }
 
     /**
@@ -102,7 +107,7 @@ public class HandlePUT extends RequestHandler implements Runnable  {
     void removePrevState(String CS_ID) throws InterruptedException, IOException {
         // Update the last received time of the Content Server to the current time
         // If a thread is already running to remove the Content Server, return
-        if (AggregationServer.setReceivedTime(CS_ID, LocalDateTime.now())) {
+        if (!toRemove) {
             return;
         }
         // If the Content Server has not given an update for 30 seconds, remove the Content Server

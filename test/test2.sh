@@ -10,8 +10,8 @@ c4=$(make client ARGS="localhost:4567 IDS60901") &
 
 
 if [ "$c1" = "$c2" ] && [ "$c2" = "$c3" ] && [ "$c3" = "$c4" ]; then
-    echo "Correct"
+    echo "Test 2 Passed" >> test_results.txt
 else
-    echo "Incorrect"
+    echo "Test 2 Failed" >> test_results.txt
 fi
 echo "---------------------------------------------------------------------------"

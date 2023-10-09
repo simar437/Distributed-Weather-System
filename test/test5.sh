@@ -12,3 +12,4 @@ echo "--------------------------------------------------------------------------
 make client ARGS="localhost:4567"
 sleep 30
 echo "---------------------------------------------------------------------------"
+echo "Test 4: (Manual Verify) Check if the data received by the client is more than the previous GET" >> test_results.txt

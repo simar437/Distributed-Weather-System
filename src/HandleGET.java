@@ -1,6 +1,18 @@
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.*;
+
+/**
+ * This class removes the extra fields from the Weather class which are used only for internal purposes
+ */
+abstract class RemoveWeatherExtras {
+    @JsonIgnore
+    int time;
+
+    @JsonIgnore
+    String contentServerID;
+}
 
 public class HandleGET extends RequestHandler implements Runnable {
 
@@ -35,6 +47,7 @@ public class HandleGET extends RequestHandler implements Runnable {
             String path = request.split(" ")[1];
 
             ObjectMapper o = new ObjectMapper();
+            o.addMixIn(Weather.class, RemoveWeatherExtras.class);
             String text;
             ArrayList<Weather> arr = new ArrayList<>();
 
@@ -90,13 +103,13 @@ public class HandleGET extends RequestHandler implements Runnable {
                     return;
                 }
                 Weather w = new Weather(currentState.get(id).peek());
-                w.contentServerID = null;
-                w.time = -1;
                 arr.add(w);
             }
 
             // Convert the ArrayList to JSON
             text = o.writeValueAsString(arr);
+
+
 
             String response = "HTTP/1.1 200 OK\r\n" +
                     "Lamport-Clock: " + AggregationServer.logEvent() + "\r\n" +

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,16 +23,25 @@ public class AggregationServer {
     static private HashMap<String, Integer> pid = new HashMap<>();
 
     /**
-     * Gives a new PID to a content station
-     * Creates backup after this
+     * Checks if the content station is already present
      *
      * @param id The id of the content station
-     * @throws IOException
+     * @return True if the content station is already present, false otherwise
+     */
+    static synchronized boolean PIDContainsCS(String id) {
+        return pid.containsKey(id);
+    }
+
+    /**
+     * Gives a new PID to a content station
+     *
+     * @param id The id of the content station
      */
 
-    static synchronized void addContentStation(String id) throws IOException {
-        pid.put(id, noOfCS++);
-        ASBackup.createBackup();
+    static synchronized void addContentStation(String id) {
+        if (!pid.containsKey(id)) {
+            pid.put(id, noOfCS++);
+        }
     }
 
     /**
@@ -43,6 +51,9 @@ public class AggregationServer {
      * @return The PID of the content station
      */
     static synchronized int getPID(String id) {
+        if (!pid.containsKey(id)) {
+            return noOfCS;
+        }
         return pid.get(id);
     }
 
@@ -50,18 +61,15 @@ public class AggregationServer {
      * Updates the current state of the Aggregation Server
      * Creates a new priority queue if the content station is new
      * Adds the weather data to the priority queue
-     * Creates backup after this
      *
      * @param id The id of the content station
      * @param w  The weather data to be added
-     * @throws IOException
      */
-    synchronized static void updateCurrentState(String id, Weather w) throws IOException {
+    synchronized static void updateCurrentState(String id, Weather w) {
         if (!currentState.containsKey(id)) {
             currentState.put(id, new PriorityQueue<>());
         }
         currentState.get(id).add(w);
-        ASBackup.createBackup();
     }
 
     /**
@@ -85,10 +93,14 @@ public class AggregationServer {
      * @throws IOException
      */
     synchronized static void removeContentStation(String id) throws IOException {
+        // Remove the content station from the current state
         for (Map.Entry<String, PriorityQueue<Weather>> i : currentState.entrySet()) {
             PriorityQueue<Weather> weatherQueue = i.getValue();
             weatherQueue.removeIf(w -> Objects.equals(w.contentServerID, id));
         }
+        // Delete keys with empty priority queue
+        currentState.entrySet().removeIf(entry -> entry.getValue().isEmpty());
+        receivedTime.remove(id);
         ASBackup.createBackup();
     }
 
@@ -108,12 +120,9 @@ public class AggregationServer {
      *
      * @param CS_ID The id of the content station
      * @param time  The received time of the content from the station
-     * @return True if the content station is already present, false otherwise
      */
-    public synchronized static boolean setReceivedTime(String CS_ID, LocalDateTime time) {
-        boolean containsKey = receivedTime.containsKey(CS_ID);
+    public synchronized static void setReceivedTime(String CS_ID, LocalDateTime time) {
         receivedTime.put(CS_ID, time);
-        return containsKey;
     }
 
     /**
@@ -150,22 +159,10 @@ public class AggregationServer {
             }
 
             ServerSocket ss = new ServerSocket(port);
-            // Create a shutdown hook to release the port gracefully
-            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                try {
-                    System.out.println("Shutting down...");
-                    // Release resources, close the server socket, etc.
-                    ss.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }));
-
             // Start server
             System.out.println("Server running...");
             while (true) {
-                Socket s = ss.accept();
-                new RequestHandler(s).handle();
+                new RequestHandler(ss.accept()).handle();
             }
         } catch (Exception e) {
             e.printStackTrace();

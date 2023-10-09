@@ -13,3 +13,5 @@ make client ARGS="localhost:4567"
 echo "---------------------------------------------------------------------------"
 make content_server ARGS="CS3 localhost:4567 weather/file3.txt" &
 make client ARGS="localhost:4567"
+
+echo "Test 4: (Manual Verify) Multiple Clients and Content Servers" >> test_results.txt

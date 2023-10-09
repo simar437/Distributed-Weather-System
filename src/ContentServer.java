@@ -50,7 +50,8 @@ public class ContentServer {
     }
     public static void main(String[] args) throws IOException {
         // Get the backup directory
-        b = new Backup(args[0]);
+        String dir = args[0];
+        b = new Backup(dir);
 
         // Restore the backup
         CSData c = CSData.restore();
@@ -131,6 +132,7 @@ public class ContentServer {
                 }
 
                 String text = jsonObjects.toString();
+                System.out.println(text);
                 String request = "PUT /weather.json HTTP/1.1\r\n" +
                         "User-Agent: ATOMClient/1/0\r\n" +
                         "Lamport-Clock: " + c.localClock + "\r\n" +
@@ -160,7 +162,7 @@ public class ContentServer {
             }
 
             // Remove the backup as the Content Server has finished sending files
-            System.out.println("Removing backup...");
+            System.out.println("Removing backup for Content Server " + dir);
             b.destroyBackup();
         }
         catch (Exception e) {

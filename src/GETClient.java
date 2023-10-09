@@ -41,7 +41,11 @@ public class GETClient {
             // If the response is OK, print the weather data
             if (data[0].contains("OK")) {
                 ObjectMapper o = new ObjectMapper();
-                for (Weather w : o.readValue(data[1], new TypeReference<List<Weather>>() {})) {
+                List<Weather> weatherData = o.readValue(data[1], new TypeReference<List<Weather>>() {});
+                if (weatherData.size() == 0) {
+                    System.out.println("No data available!");
+                }
+                for (Weather w : weatherData) {
                     System.out.println(w + "\n");
                 }
             }

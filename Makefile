@@ -29,10 +29,15 @@ content_server:
 client:
 	$(JAVA) -cp "$(JACKSON_DIR)/*$(PATH_SEPARATOR)$(OUT_DIR)" $(CLIENT) $(ARGS)
 
-.PHONY: test
-test:
-	bash test/test1.sh
-	bash test/test2.sh
-	bash test/test3.sh
-	bash test/test4.sh
-	bash test/test5.sh
+.PHONY: test1 test2
+TESTS := $(shell seq 1 9)
+
+test1:
+	@for test in $(TESTS); do \
+		bash test/test$$test.sh; \
+		sleep 30; \
+	done
+
+
+test2:
+	bash test/test10.sh
