@@ -131,7 +131,7 @@ Sleep Mechanism of the Content Server
 - Run the Client
 - The output of the second client should be different from the first client
 
-# What is working (Everything)
+# Key Features
 - GET requests
 - PUT requests
 - Interoperability for GET requests
@@ -149,5 +149,3 @@ Sleep Mechanism of the Content Server
 - Multiple Content Servers
 - Multiple Clients
 - Syncing the Content Server with the Aggregation Server
-
-Note: I did not attempt the bonus question
