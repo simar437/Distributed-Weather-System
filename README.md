@@ -45,7 +45,8 @@ make content_server ARGS="CS1 localhost:1234 file1.txt file2.txt ..."
 - The above will create a directory named ```CS1 backup``` and store the backup files in it
 - Supports all three URL formats specified in the Assignment description 
 
-Note: The Content Server deletes the backup files after successful execution to avoid namespace clutter, you can comment out the line ```b.destroyBackup();``` at line 165 in the ```ContentServer.java``` if you want to keep the backup files. 
+Note: The Content Server deletes the backup files after successful execution to avoid namespace clutter.
+
 ### Run Client
 ```
 make client ARGS="localhost:1234 ID12345"
